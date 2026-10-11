@@ -1,19 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>To-Do List</title>
-        <preconnect href="https://fonts.googleapis.com">
-  <preconnect href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://googleapis.com" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
-        <script src="script.js" defer></script> 
+        <script src="main.js" defer></script>
     </head>
     <body>
-        <h1>A simple to do list or is it</h1>
-        <div class="bubble container">
-            <div class="bubble">
-                <p>Get started</p>
-            </div>
+        <div class ="water-container">
+            <div class ="water-wave" id="waterBg"></div>
         </div>
+        <div class="app-shell container-fluid p-0 d-flex position-relative z-3">
+            <!-- Sidebar -->
+            <aside class="sidebar p-4 d-flex flex-column gap-4">
+                <!-- sidebar header -->
+                <div>
+                   <p class="eyebrow mb-2">LEVEL UP YOUR DAY</p>
+                   <h2 class="h4 fw-bold mb-1">Task Arcade</h2>
+                   <p class="small mb-0 sidebar-note">Create a task. Clear the board.</p>
+                </div>
+                <div class="task-counter" aria-live="polite"><span id="taskCount">0</span> tasks in play</div>
+                <!--sidebar task creation-->
+                <section class="control-section d-flex flex-column gap-2">
+                    <h3 class ="section-title">New task</h3>
+                    <div class="mb-2">
+                        <label class="visually-hidden" for="taskTitle">Task title</label>
+                        <input id="taskTitle" class="form-control task-input mb-2" placeholder="What needs doing?" autocomplete="off" maxlength="80">
+                        <label class="visually-hidden" for="taskDesc">Task description</label>
+                        <textarea id="taskDesc" class="form-control task-input" placeholder="Add a note (optional)" autocomplete="off" rows="2" maxlength="240"></textarea>
+                    </div>
+                    <button id="btnShoot" class="btn arcade-button w-100 fw-bold mt-1">＋ Add to board</button>
+                </section>
+
+                <!--UI customizability-->
+                <section class="control-section d-flex flex-column gap-2">
+                    <h3 class="section-title">Make it yours</h3>
+                    <div class="mb-2">
+                        <label for="pageColor" class="form-label small mb-1">Board colour</label>
+                        <input type="color" id="pageColor" class="form-control form-control-color color-picker" value="#b84432">
+                    </div>
+                    <div class="mb-2">
+                        <label for="bubbleColor" class="form-label small mb-1">Bubble tint</label>
+                        <input type="color" id="bubbleColor" class="form-control form-control-color color-picker" value="#f4cda5">
+                    </div>
+                    <div class="mb-2">
+                        <label for="blurStrength" class="form-label small mb-1 range-label">Glass blur <output id="blurValue">12px</output></label>
+                        <input type="range" id="blurStrength" class="form-range" min="0" max="24" value="12">
+                    </div>
+                    <div class="mb-2">
+                        <label for="glassStrength" class="form-label small mb-1 range-label">Glass opacity <output id="glassValue">18%</output></label>
+                        <input type="range" id="glassStrength" class="form-range" min="8" max="40" value="18">
+                    </div>
+                    <label class="pixel-toggle" for="pixelEffect">
+                        <input type="checkbox" id="pixelEffect" checked>
+                        <span>CRT pixel overlay</span>
+                    </label>
+                    <button id="resetStyle" class="btn reset-button" type="button">Reset style</button>
+                </section>
+                <p class="sidebar-footer">A little progress goes a long way.</p>
+            </aside>
+            <!-- Main content -->
+            <main class="flex-grow-1 position-relative h-100" id="sandbox" aria-label="Task board">
+                <div class="board-hint" id="boardHint">YOUR BOARD<br><span>Add a task to start playing</span></div>
+            </main>
+        </div>
+        <!--interactive shi-->
+
+         <div class="modal-overlay d-flex justify-content-center align-items-center" id="modalOverlay" aria-hidden="true">
+            <div class="glass-modal p-4 text-center rounded-4 shadow-lg text-white" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+                <h2 id="modalTitle" class="h4 fw-bold mb-2">Task Title</h2>
+                <p id="modalDesc" class="text-white-50 mb-4 small"></p>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-success flex-grow-1 fw-bold" id="btnComplete">Complete</button>
+                    <button class="btn btn-outline-light flex-grow-1 fw-bold" id="btnClose">Cancel</button>
+                </div>
+            </div>
+         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
