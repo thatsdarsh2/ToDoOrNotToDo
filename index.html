@@ -12,75 +12,194 @@
         <script src="main.js" defer></script>
     </head>
     <body>
-        <div class ="water-container">
+        <div class="water-container" aria-hidden="true">
             <div class ="water-wave" id="waterBg"></div>
         </div>
         <div class="app-shell container-fluid p-0 d-flex position-relative z-3">
-            <!-- Sidebar -->
             <aside class="sidebar p-4 d-flex flex-column gap-4">
-                <!-- sidebar header -->
-                <div>
-                   <p class="eyebrow mb-2">LEVEL UP YOUR DAY</p>
-                   <h2 class="h4 fw-bold mb-1">Task Arcade</h2>
-                   <p class="small mb-0 sidebar-note">Create a task. Clear the board.</p>
+                <div class="sidebar-brand">
+                    <div class="brand-mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5 9.2 17 19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2.8a9.2 9.2 0 1 0 9.2 9.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="brand-copy">
+                        <h2 class="h5 fw-bold mb-0">Task Arcade</h2>
+                        <p class="small mb-0 sidebar-note">A little progress, daily.</p>
+                    </div>
+                    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Collapse sidebar" aria-expanded="true" title="Collapse sidebar">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m14.5 5-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
                 </div>
-                <div class="task-counter" aria-live="polite"><span id="taskCount">0</span> tasks in play</div>
-                <!--sidebar task creation-->
+                <nav class="collapsed-shortcuts" aria-label="Quick actions">
+                    <button class="shortcut-button" id="shortcutAdd" type="button" aria-label="Add a task" title="Add a task"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+                    <button class="shortcut-button" id="shortcutCalendar" type="button" aria-label="Open week agenda" title="Open week agenda"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 3v4M16.5 3v4M4 9h16M8 13h2m4 0h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+                    <button class="shortcut-button" id="shortcutFocus" type="button" aria-label="Focus my next task" title="Focus my next task"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></button>
+                </nav>
+                <section class="task-overview" aria-label="Task overview" aria-live="polite">
+                    <div class="overview-main">
+                        <span class="overview-label">OPEN TASKS</span>
+                        <strong id="taskCount">0</strong>
+                    </div>
+                    <div class="overview-secondary">
+                        <span><strong id="dueTodayCount">0</strong> due today</span>
+                        <span><strong id="highPriorityCount">0</strong> high priority</span>
+                    </div>
+                </section>
                 <section class="control-section d-flex flex-column gap-2">
-                    <h3 class ="section-title">New task</h3>
+                    <h3 class="section-title"><span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span>New task</span></h3>
                     <div class="mb-2">
                         <label class="visually-hidden" for="taskTitle">Task title</label>
                         <input id="taskTitle" class="form-control task-input mb-2" placeholder="What needs doing?" autocomplete="off" maxlength="80">
                         <label class="visually-hidden" for="taskDesc">Task description</label>
                         <textarea id="taskDesc" class="form-control task-input" placeholder="Add a note (optional)" autocomplete="off" rows="2" maxlength="240"></textarea>
+                        <label for="taskDue" class="form-label small mt-2 mb-1">Date &amp; time</label>
+                        <input id="taskDue" class="form-control task-input" type="datetime-local">
+                        <div class="task-options mt-2">
+                            <label class="visually-hidden" for="taskPriority">Priority</label>
+                            <select id="taskPriority" class="form-select task-input">
+                                <option value="normal">Normal priority</option>
+                                <option value="high">High priority</option>
+                                <option value="low">Low priority</option>
+                            </select>
+                            <label class="visually-hidden" for="taskCategory">Category</label>
+                            <input id="taskCategory" class="form-control task-input" placeholder="Category (optional)" maxlength="32">
+                        </div>
+                        <label for="taskRepeat" class="form-label small mt-2 mb-1">Repeat</label>
+                        <select id="taskRepeat" class="form-select task-input">
+                            <option value="none">Does not repeat</option>
+                            <option value="daily">Every day</option>
+                            <option value="weekdays">Every weekday</option>
+                            <option value="weekly">Every week</option>
+                            <option value="monthly">Every month</option>
+                        </select>
+                        <label for="taskReminder" class="form-label small mt-2 mb-1">Reminder</label>
+                        <select id="taskReminder" class="form-select task-input">
+                            <option value="none">No reminder</option>
+                            <option value="due">At due time</option>
+                            <option value="10">10 minutes before</option>
+                            <option value="30">30 minutes before</option>
+                        </select>
                     </div>
-                    <button id="btnShoot" class="btn arcade-button w-100 fw-bold mt-1">＋ Add to board</button>
+                    <button id="btnShoot" class="btn arcade-button w-100 fw-bold mt-1"><span aria-hidden="true">＋</span> Add task</button>
                 </section>
 
-                <!--UI customizability-->
+                <section class="control-section focus-tools d-flex flex-column gap-2">
+                    <h3 class="section-title"><span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 9v4l2.8 1.8M9 2h6M12 2v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Focus timer</span></h3>
+                    <p class="focus-task-label mb-0" id="focusTaskLabel">Ready when you are</p>
+                    <div class="timer-display" id="timerDisplay" aria-live="polite">25:00</div>
+                    <div class="d-flex gap-2">
+                        <button id="timerStart" class="btn arcade-button flex-grow-1 fw-bold" type="button">Start</button>
+                        <button id="timerReset" class="btn btn-outline-light" type="button">Reset</button>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button id="workMode" class="btn btn-sm btn-outline-light flex-grow-1" type="button" aria-pressed="true">Focus · 25m</button>
+                        <button id="breakMode" class="btn btn-sm btn-outline-light flex-grow-1" type="button" aria-pressed="false">Break · 5m</button>
+                    </div>
+                    <button id="focusToggle" class="btn btn-sm btn-outline-warning" type="button" aria-pressed="false">Enter focus mode</button>
+                </section>
+
                 <section class="control-section d-flex flex-column gap-2">
-                    <h3 class="section-title">Make it yours</h3>
+                    <h3 class="section-title"><span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3ZM19 16l.9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9L19 16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span>Smart assists</span></h3>
+                    <button id="focusNextTask" class="btn btn-sm btn-outline-light" type="button">Focus my next task</button>
+                    <button id="addDailyRoutine" class="btn btn-sm btn-outline-light" type="button">Add an everyday routine</button>
+                    <button id="enableNotifications" class="btn btn-sm btn-outline-light" type="button">Enable browser reminders</button>
+                    <p class="small mb-0 helper-note" id="notificationStatus">Reminders work while this page is open.</p>
+                </section>
+
+                <section class="control-section d-flex flex-column gap-2">
+                    <h3 class="section-title"><span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/></svg></span><span>Appearance</span></h3>
                     <div class="mb-2">
                         <label for="pageColor" class="form-label small mb-1">Board colour</label>
-                        <input type="color" id="pageColor" class="form-control form-control-color color-picker" value="#b84432">
+                        <input type="color" id="pageColor" class="form-control form-control-color color-picker" value="#111827">
                     </div>
                     <div class="mb-2">
-                        <label for="bubbleColor" class="form-label small mb-1">Bubble tint</label>
-                        <input type="color" id="bubbleColor" class="form-control form-control-color color-picker" value="#f4cda5">
+                        <label for="bubbleColor" class="form-label small mb-1">Accent colour</label>
+                        <input type="color" id="bubbleColor" class="form-control form-control-color color-picker" value="#f5bd77">
                     </div>
                     <div class="mb-2">
                         <label for="blurStrength" class="form-label small mb-1 range-label">Glass blur <output id="blurValue">12px</output></label>
                         <input type="range" id="blurStrength" class="form-range" min="0" max="24" value="12">
                     </div>
                     <div class="mb-2">
-                        <label for="glassStrength" class="form-label small mb-1 range-label">Glass opacity <output id="glassValue">18%</output></label>
+                        <label for="glassStrength" class="form-label small mb-1 range-label">Glass highlight <output id="glassValue">18%</output></label>
                         <input type="range" id="glassStrength" class="form-range" min="8" max="40" value="18">
                     </div>
                     <label class="pixel-toggle" for="pixelEffect">
-                        <input type="checkbox" id="pixelEffect" checked>
+                        <input type="checkbox" id="pixelEffect">
                         <span>CRT pixel overlay</span>
                     </label>
                     <button id="resetStyle" class="btn reset-button" type="button">Reset style</button>
                 </section>
-                <p class="sidebar-footer">A little progress goes a long way.</p>
+                <p class="sidebar-footer"><span class="sidebar-footer-mark" aria-hidden="true">✦</span> Small steps add up.</p>
             </aside>
-            <!-- Main content -->
-            <main class="flex-grow-1 position-relative h-100" id="sandbox" aria-label="Task board">
-                <div class="board-hint" id="boardHint">YOUR BOARD<br><span>Add a task to start playing</span></div>
+            <main class="flex-grow-1 position-relative h-100" aria-label="Task board">
+                <nav class="board-navigation" aria-label="Task views">
+                    <button class="view-button active" id="boardViewButton" type="button" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="4" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="4" y="14" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="14" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg> Board</button>
+                    <button class="view-button" id="calendarViewButton" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 3v4M16.5 3v4M4 9h16M8 13h2m4 0h2M8 17h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Week agenda</button>
+                    <span class="view-spacer"></span>
+                    <button id="onboardingButton" class="view-button help-button" type="button">How it works</button>
+                </nav>
+                <header class="board-heading">
+                    <div>
+                        <p class="board-date-label" id="boardDateLabel">YOUR SPACE</p>
+                        <h1 id="boardTitle">Your tasks</h1>
+                        <p id="boardSummary">A clear space for the things that matter.</p>
+                    </div>
+                    <div class="board-progress" aria-label="Task completion progress">
+                        <span class="progress-ring" aria-hidden="true"><svg viewBox="0 0 44 44"><circle class="progress-track" cx="22" cy="22" r="18"/><circle class="progress-value" id="progressRingValue" cx="22" cy="22" r="18"/></svg><strong id="progressPercent">0%</strong></span>
+                        <span class="progress-caption">today's<br>progress</span>
+                    </div>
+                </header>
+                <section id="sandbox" aria-label="Task board">
+                    <div class="board-hint" id="boardHint"><span class="empty-mark" aria-hidden="true">✦</span><strong>Your board is clear</strong><span>Add your first task and make today count.</span></div>
+                </section>
+                <section id="calendarView" class="calendar-view is-hidden" aria-label="Weekly task agenda">
+                    <div class="calendar-heading">
+                        <div>
+                            <p class="eyebrow mb-1">MAKE SPACE FOR WHAT MATTERS</p>
+                            <h2 class="h4 fw-bold mb-0">Your week</h2>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button id="previousWeek" class="view-button" type="button" aria-label="Previous week">←</button>
+                            <button id="todayWeek" class="view-button" type="button">Today</button>
+                            <button id="nextWeek" class="view-button" type="button" aria-label="Next week">→</button>
+                        </div>
+                    </div>
+                    <p class="calendar-range" id="calendarRange"></p>
+                    <div id="calendarDays" class="calendar-days"></div>
+                </section>
             </main>
         </div>
-        <!--interactive shi-->
-
          <div class="modal-overlay d-flex justify-content-center align-items-center" id="modalOverlay" aria-hidden="true">
             <div class="glass-modal p-4 text-center rounded-4 shadow-lg text-white" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
                 <h2 id="modalTitle" class="h4 fw-bold mb-2">Task Title</h2>
                 <p id="modalDesc" class="text-white-50 mb-4 small"></p>
+                <p id="modalDetails" class="task-modal-details"></p>
                 <div class="d-flex gap-2">
+                    <button class="btn btn-outline-warning flex-grow-1 fw-bold" id="btnFocusTask" type="button">Focus</button>
                     <button class="btn btn-success flex-grow-1 fw-bold" id="btnComplete">Complete</button>
                     <button class="btn btn-outline-light flex-grow-1 fw-bold" id="btnClose">Cancel</button>
                 </div>
             </div>
          </div>
+        <div class="modal-overlay onboarding-overlay d-flex justify-content-center align-items-center" id="onboardingOverlay" aria-hidden="true">
+            <section class="glass-modal onboarding-card p-4 rounded-4 shadow-lg text-white" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
+                <p class="eyebrow mb-2">A CALMER WAY TO GET THINGS DONE</p>
+                <h2 id="onboardingTitle" class="h3 fw-bold mb-2">Welcome to Task Arcade</h2>
+                <p class="text-white-50">Add tasks with due dates, priorities and reminders. Repeating tasks roll forward when you complete them. Plan your week, then use a focus timer to get started.</p>
+                <ul class="onboarding-list">
+                    <li>Use <strong>Week agenda</strong> to see scheduled tasks at a glance.</li>
+                    <li>Choose <strong>Enable browser reminders</strong> to grant notification permission.</li>
+                    <li>Try <strong>Smart assists</strong> for a daily starter routine or your next suggested task.</li>
+                </ul>
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <button id="addRoutineFromOnboarding" class="btn btn-outline-light flex-grow-1" type="button">Add daily routine</button>
+                    <button id="dismissOnboarding" class="btn arcade-button flex-grow-1 fw-bold" type="button">Let's get started</button>
+                </div>
+                <div class="achievement-toast" id="achievementToast" role="status" aria-live="polite" aria-atomic="true">
+                    <span class="toast-mark" aria-hidden="true">✓</span><span id="achievementMessage"></span>
+                </div>
+            </section>
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
