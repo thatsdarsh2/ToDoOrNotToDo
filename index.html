@@ -9,6 +9,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
+        <script src="onboarding.js" defer></script>
         <script src="main.js" defer></script>
     </head>
     <body>
@@ -182,18 +183,38 @@
             </div>
          </div>
         <div class="modal-overlay onboarding-overlay d-flex justify-content-center align-items-center" id="onboardingOverlay" aria-hidden="true">
-            <section class="glass-modal onboarding-card p-4 rounded-4 shadow-lg text-white" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
-                <p class="eyebrow mb-2">A CALMER WAY TO GET THINGS DONE</p>
-                <h2 id="onboardingTitle" class="h3 fw-bold mb-2">Welcome to Task Arcade</h2>
-                <p class="text-white-50">Add tasks with due dates, priorities and reminders. Repeating tasks roll forward when you complete them. Plan your week, then use a focus timer to get started.</p>
-                <ul class="onboarding-list">
-                    <li>Use <strong>Week agenda</strong> to see scheduled tasks at a glance.</li>
-                    <li>Choose <strong>Enable browser reminders</strong> to grant notification permission.</li>
-                    <li>Try <strong>Smart assists</strong> for a daily starter routine or your next suggested task.</li>
-                </ul>
-                <div class="d-flex flex-wrap gap-2 mt-4">
-                    <button id="addRoutineFromOnboarding" class="btn btn-outline-light flex-grow-1" type="button">Add daily routine</button>
-                    <button id="dismissOnboarding" class="btn arcade-button flex-grow-1 fw-bold" type="button">Let's get started</button>
+            <section class="onboarding-card" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingCopy">
+                <div class="onboarding-art" aria-hidden="true">
+                    <span class="art-orbit orbit-one"></span><span class="art-orbit orbit-two"></span>
+                    <span class="art-spark spark-one">✦</span><span class="art-spark spark-two">✧</span>
+                    <div class="art-note note-back"></div><div class="art-note note-front"><span>Today</span><i></i><i></i><i></i></div>
+                    <span class="art-caption">A little progress, every day</span>
+                </div>
+                <div class="onboarding-content">
+                    <div class="onboarding-topline"><span class="onboarding-kicker">YOUR PERSONAL TASK SPACE</span><button class="onboarding-close" id="dismissOnboarding" type="button" aria-label="Close welcome guide">×</button></div>
+                    <div class="onboarding-progress" aria-label="Onboarding progress"><span id="onboardingProgressFill"></span></div>
+                    <div class="onboarding-step is-active" data-step="0" aria-hidden="false">
+                        <p class="onboarding-step-label">01 / GET STARTED</p><h2 id="onboardingTitle">Make room for what matters.</h2>
+                        <p id="onboardingCopy">A calm place to plan your day, keep useful notes, and make steady progress at your own pace.</p>
+                        <div class="onboarding-tip"><span>✦</span><div><strong>Your board stays yours</strong><small>Tasks and appearance settings are saved in this browser on this device.</small></div></div>
+                    </div>
+                    <div class="onboarding-step" data-step="1" aria-hidden="true">
+                        <p class="onboarding-step-label">02 / PLAN YOUR TASKS</p><h2>Keep the details close.</h2>
+                        <p>Add a title and optional note, then choose a due date, priority, category, repeat schedule, or reminder. Select a task card to focus on it, complete it, or review its details.</p>
+                        <div class="onboarding-chips"><span>Due dates</span><span>Priority</span><span>Repeats</span><span>Reminders</span></div>
+                    </div>
+                    <div class="onboarding-step" data-step="2" aria-hidden="true">
+                        <p class="onboarding-step-label">03 / SEE THE WEEK</p><h2>Find a rhythm that works.</h2>
+                        <p>The overview counts open, due-today, and high-priority tasks. The ring tracks what you finish today; completing a task also raises the calm waterline. Open <strong>Week agenda</strong> to see dated tasks by day and move between weeks.</p>
+                        <div class="onboarding-tip"><span>↗</span><div><strong>Need a starting point?</strong><small>Smart assists can suggest your next task or add a repeatable daily routine.</small></div></div>
+                    </div>
+                    <div class="onboarding-step" data-step="3" aria-hidden="true">
+                        <p class="onboarding-step-label">04 / MAKE IT YOURS</p><h2>Settle into focus.</h2>
+                        <p>Use the focus timer for work or breaks, then hide distractions with focus mode. Collapse the sidebar for quick-action buttons. Under Appearance, tune the board and accent colours, glass blur, highlight, and optional pixel texture. Browser reminders work while this page is open.</p>
+                        <div class="onboarding-security"><strong>About device sign-in</strong><span>This local app doesn’t have accounts. A secure passkey sign-in needs a hosted service; never enter your device password into this page.</span></div>
+                    </div>
+                    <div class="onboarding-actions"><button class="onboarding-back" id="onboardingBack" type="button">Back</button><div class="onboarding-dots" id="onboardingDots" aria-label="Guide page"></div><button class="onboarding-next" id="onboardingNext" type="button">Continue <span aria-hidden="true">→</span></button></div>
+                    <button class="onboarding-routine" id="addRoutineFromOnboarding" type="button">Add the sample daily routine</button>
                 </div>
                 <div class="achievement-toast" id="achievementToast" role="status" aria-live="polite" aria-atomic="true">
                     <span class="toast-mark" aria-hidden="true">✓</span><span id="achievementMessage"></span>
